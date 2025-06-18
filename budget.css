@@ -1,0 +1,249 @@
+/********** Budget Visualizer CSS - Green M.P. Vibe with Creamy Beige Background **********/
+/* Inspired by M.P.'s lush landscapes (green shades) and sandstone heritage (creamy beige) */
+:root {
+    --primary: #FEA116;
+    --light: #F1F8FF;
+    --dark: #0F172B;
+    --accent: #6B705C; /* Olive green accent */
+    --highlight: #C2E0C6; /* Lime green highlight */
+}
+
+.fw-medium {
+    font-weight: 500 !important;
+}
+
+.fw-semi-bold {
+    font-weight: 600 !important;
+}
+
+/*** Button ***/
+.btn {
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: .3s;
+}
+
+.btn.btn-primary {
+    color: #FFFFFF;
+    background-color: var(--primary); /* Vibrant green */
+    border-color: var(--primary);
+}
+
+.btn.btn-primary:hover {
+    background-color: var(--accent); /* Olive green */
+    border-color: var(--accent);
+}
+
+/*** Section Title ***/
+.section-title {
+    position: relative;
+    display: inline-block;
+    color: var(--dark); /* Deep forest green */
+}
+
+.section-title::before {
+    position: absolute;
+    content: "";
+    width: 45px;
+    height: 2px;
+    top: 50%;
+    left: -55px;
+    margin-top: -1px;
+    background: var(--primary); /* Vibrant green */
+}
+
+.section-title::after {
+    position: absolute;
+    content: "";
+    width: 45px;
+    height: 2px;
+    top: 50%;
+    right: -55px;
+    margin-top: -1px;
+    background: var(--primary); /* Vibrant green */
+}
+
+.section-title.text-start::before,
+.section-title.text-end::after {
+    display: none;
+}
+
+/*** Budget Form ***/
+.container-xxl {
+    padding: 60px 0;
+    background-color: var(--light); /* Creamy beige backdrop, reverted */
+}
+
+.bg-light {
+    background-color: #FFFFFF !important; /* White form for clarity */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid var(--highlight); /* Lime green outline */
+}
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translate-middle-y(-50%);
+    color: var(--dark); /* Deep forest green rupee */
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.form-control {
+    height: 50px;
+    padding-left: 40px;
+    border: none;
+    border-radius: 4px;
+    background-color: #FFF;
+    font-size: 14px;
+    transition: box-shadow 0.3s;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 5px rgba(46, 125, 50, 0.5); /* Vibrant green glow */
+    border-color: var(--primary);
+}
+
+.form-control.is-invalid {
+    border: 1px solid #dc3545; /* Keep red for errors */
+}
+
+.text-danger {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.btn.btn-primary {
+    font-size: 16px;
+    padding: 12px;
+}
+
+/*** Custom Text Colors ***/
+.text-primary {
+    color: var(--primary) !important; /* Vibrant green instead of blue */
+}
+
+/*** Results Section ***/
+.city-card {
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid var(--primary); /* Vibrant green border */
+    transition: transform 0.3s;
+    display: flex;
+    align-items: stretch; /* Ensure height matches content */
+    padding: 20px;
+    min-height: 400px; /* Minimum height to ensure visibility */
+}
+
+.city-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(107, 112, 92, 0.2); /* Olive green shadow */
+}
+
+.city-card h4 {
+    font-size: 1.5rem;
+    color: var(--primary); /* Vibrant green headings */
+}
+
+.city-card p, .city-card ul {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark); /* Deep forest green text */
+}
+
+.city-card ul {
+    padding-left: 20px;
+}
+
+.city-details {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.city-image-container {
+    flex: 0 0 300px; /* Fixed width for right side */
+    margin-left: 20px;
+    border-left: 1px solid #FEA116; /* Green border for separation */
+    padding-left: 20px;
+    display: flex;
+    align-items: stretch; /* Ensure image container stretches vertically */
+}
+
+.city-image {
+    width: 100%;
+    height: 100%; /* Adjust height dynamically */
+    object-fit: cover; /* Maintain aspect ratio and cover space */
+    border: 2px solid var(--primary); /* Vibrant green border */
+    border-radius: 4px;
+}
+
+/*** Budget Visualizer Chart ***/
+#results {
+    background: var(--light); /* Creamy beige results area, reverted */
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#budgetChart {
+    max-height: 300px;
+}
+
+/*** Responsive Adjustments ***/
+@media (max-width: 768px) {
+    .city-card {
+        flex-direction: column;
+        min-height: auto; /* Remove min-height on mobile */
+    }
+    .city-image-container {
+        margin-left: 0;
+        margin-top: 20px;
+        flex: 0 0 100%; /* Full width on mobile */
+        border-left: none;
+        padding-left: 0;
+        height: 200px; /* Fixed height for mobile */
+    }
+    .city-image {
+        height: 100%; /* Fill container height */
+    }
+    .city-details {
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-xxl {
+        padding: 30px 15px;
+    }
+
+    .form-control {
+        font-size: 13px;
+        height: 45px;
+    }
+
+    .btn.btn-primary {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .city-card h4 {
+        font-size: 1.3rem;
+    }
+
+    .city-card p, .city-card ul {
+        font-size: 0.9rem;
+    }
+
+    .city-image-container {
+        height: 150px; /* Adjusted height for very small screens */
+    }
+
+    #budgetChart {
+        max-height: 250px;
+    }
+}

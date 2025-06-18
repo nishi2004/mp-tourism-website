@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Know The Story - Heart of India Tours</title>
+    <link rel="stylesheet" href="drop.css">
+</head>
+<body>
+    <header>
+        <h1>Know The Story – जानिए इतिहास</h1>
+        <p>Discover the rich heritage of Madhya Pradesh, right at your fingertips.</p>
+    </header>
+    <main>
+        <section id="selector">
+            <div class="dropdown-container">
+                <label for="city">Select City:</label>
+                <select id="city" onchange="updateMonuments()">
+                    <option value="">Choose a City</option>
+                </select>
+            </div>
+            <div class="dropdown-container">
+                <label for="monument">Select Monument:</label>
+                <select id="monument" onchange="displayStory()" disabled>
+                    <option value="">Choose a Monument</option>
+                </select>
+            </div>
+            <div class="language-toggle">
+                <button id="lang-en" class="lang-btn active" onclick="setLanguage('en')">English</button>
+                <button id="lang-hi" class="lang-btn" onclick="setLanguage('hi')">Hindi</button>
+            </div>
+        </section>
+        <section id="story" class="hidden">
+            <h2 id="monument-title"></h2>
+            <p id="intro"></p>
+            <div id="history"></div>
+            <div id="audio-player">
+                <button id="play-btn" onclick="toggleAudio()">▶ Play Story</button>
+                <audio id="audio" src=""></audio>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 Heart of India Tours. All rights reserved.</p>
+    </footer>
+    <script>
+        const citiesData = [
+            { name: "Bhopal", monuments: ["Upper Lake", "Taj-ul-Masjid", "Bhimbetka Rock Shelters"] },
+            { name: "Indore", monuments: ["Rajwada Palace", "Lal Bagh Palace", "Kanch Mandir"] },
+            { name: "Gwalior", monuments: ["Gwalior Fort", "Jai Vilas Palace", "Tansen Tomb"] },
+            { name: "Jabalpur", monuments: ["Dhuandhar Falls", "Marble Rocks", "Madan Mahal Fort"] },
+            { name: "Ujjain", monuments: ["Mahakaleshwar Temple", "Kal Bhairav Temple"] },
+            { name: "Sanchi", monuments: ["Sanchi Stupa", "Udayagiri Caves", "Ashoka Pillar"] },
+            { name: "Khajuraho", monuments: ["Khajuraho Temples", "Raneh Falls"] },
+            { name: "Mandu", monuments: ["Jahaz Mahal", "Rani Roopmati Pavilion", "Hindola Mahal"] },
+            { name: "Orchha", monuments: ["Orchha Fort", "Chaturbhuj Temple", "Raja Mahal"] },
+            { name: "Pachmarhi", monuments: ["Bee Falls", "Dhupgarh Peak", "Jata Shankar Caves"] },
+            { name: "Rewa", monuments: ["Rewa Fort", "Keoti Falls", "Venkat Bhawan"] },
+            { name: "Satna", monuments: ["Chitrakoot Falls", "Maihar Temple", "Bharat Milap Temple"] },
+            { name: "Panna", monuments: ["Panna National Park", "Pandav Falls"] },
+            { name: "Chanderi", monuments: ["Chanderi Fort", "Koshak Mahal", "Badal Mahal Gate"] },
+            { name: "Shivpuri", monuments: ["Madhav National Park", "Chhatri"] },
+            { name: "Hoshangabad", monuments: ["Sethani Ghat", "Tawa Reservoir"] },
+            { name: "Chhindwara", monuments: ["Patalkot Valley", "Tamia Hills"] },
+            { name: "Betul", monuments: ["Muktagiri Jain Temple", "Balajipuram Temple"] },
+            { name: "Damoh", monuments: ["Kundalpur Temples", "Nidan Falls", "Jatashankar Temple"] },
+            { name: "Vidisha", monuments: ["Udayagiri Caves", "Heliodorus Pillar", "Bija Mandal"] },
+            { name: "Burhanpur", monuments: ["Asirgarh Fort", "Shahi Qila", "Dargah-e-Hakimi"] },
+            { name: "Khandwa", monuments: ["Hanuwantiya Island", "Omkareshwar Temple", "Nagchun Dam"] },
+            { name: "Seoni", monuments: ["Pench National Park", "Seoni Fort", "Ghoghra Falls"] },
+            { name: "Raisen", monuments: ["Raisen Fort", "Bhimbetka Caves"] },
+            { name: "Morena", monuments: ["Bateshwar Temples", "Sabalgarh Fort", "Mitawali Temple"] },
+            { name: "Narsinghpur", monuments: ["Narsingh Temple", "Barman Ghat", "Dhoomeshwar Mahadev"] },
+            { name: "Balaghat", monuments: ["Lanji Fort", "Hatta Ki Baoli"] },
+            { name: "Dewas", monuments: ["Chamunda Tekri", "Kaila Devi Temple"] },
+            { name: "Tikamgarh", monuments: ["Garh Kundar Fort", "Laxmi Temple"] },
+            { name: "Sidhi", monuments: ["Sanjay-Dubri National Park", "Parsili Resort"] }
+        ];
+
+        const stories = {
+            "Orchha Fort": {
+                en: {
+                    intro: "A majestic fortress reflecting the grandeur of Bundela architecture.",
+                    history: "Orchha Fort, built in the 16th century by the Bundela Rajputs, stands as a testament to the region's rich history. Founded by Rudra Pratap Singh, the fort complex includes palaces like Raja Mahal and Jahangir Mahal, adorned with intricate murals and chhatris. It served as the capital of the Bundela kingdom and witnessed numerous battles and alliances. The fort's strategic location by the Betwa River made it a stronghold, blending Rajput and Mughal architectural styles."
+                },
+                hi: {
+                    intro: "बुंदेला वास्तुकला की भव्यता को दर्शाने वाला एक शानदार किला।",
+                    history: "ओरछा किला, 16वीं शताब्दी में बुंदेला राजपूतों द्वारा निर्मित, इस क्षेत्र के समृद्ध इतिहास का प्रतीक है। रुद्र प्रताप सिंह द्वारा स्थापित, इस किले में राजा महल और जहांगीर महल जैसे महल शामिल हैं, जो जटिल भित्ति चित्रों और छतरियों से सजे हैं। यह बुंदेला साम्राज्य की राजधानी थी और इसने कई युद्धों और गठबंधनों को देखा। बेतवा नदी के किनारे इसकी रणनीतिक स्थिति ने इसे एक मजबूत गढ़ बनाया, जिसमें राजपूत और मुगल वास्तुकला का मिश्रण है।"
+                }
+            },
+            "Khajuraho Temples": {
+                en: {
+                    intro: "UNESCO World Heritage Site famous for its erotic sculptures.",
+                    history: "Built between 950-1050 AD by the Chandela dynasty, the Khajuraho Temples are a group of Hindu and Jain temples renowned for their intricate carvings. Originally comprising 85 temples, 22 remain today, showcasing nagara-style architecture. The temples, dedicated to deities like Shiva and Vishnu, feature sculptures depicting daily life, mythology, and sensuality, reflecting the Chandela's artistic zenith."
+                },
+                hi: {
+                    intro: "यूनेस्को विश्व धरोहर स्थल, अपनी कामुक मूर्तियों के लिए प्रसिद्ध।",
+                    history: "950-1050 ईस्वी के बीच चंदेल वंश द्वारा निर्मित, खजुराहो मंदिर हिंदू और जैन मंदिरों का एक समूह है, जो अपनी जटिल नक्काशी के लिए प्रसिद्ध है। मूल रूप से 85 मंदिरों में से, आज 22 बचे हैं, जो नागर शैली की वास्तुकला को प्रदर्शित करते हैं। शिव और विष्णु जैसे देवताओं को समर्पित मंदिरों में मूर्तियां दैनिक जीवन, पौराणिक कथाओं और कामुकता को दर्शाती हैं, जो चंदेल की कलात्मक उत्कृष्टता को दर्शाती हैं।"
+                }
+            },
+            "Sanchi Stupa": {
+                en: {
+                    intro: "One of the oldest Buddhist monuments in India.",
+                    history: "Commissioned by Emperor Ashoka in the 3rd century BCE, Sanchi Stupa is a UNESCO World Heritage Site symbolizing Buddhist architecture. Expanded under the Shunga dynasty, it features intricately carved gateways (toranas) depicting Jataka tales. The stupa served as a major pilgrimage site, housing relics of the Buddha, and reflects the spread of Buddhism across Asia."
+                },
+                hi: {
+                    intro: "भारत में सबसे पुराने बौद्ध स्मारकों में से एक।",
+                    history: "सम्राट अशोक द्वारा तीसरी शताब्दी ईसा पूर्व में निर्मित, सanchi स्टूपा एक यूनेस्को विश्व धरोहर स्थल है जो बौद्ध वास्तुकला का प्रतीक है। शुंग वंश के तहत विस्तारित, इसमें जटक कथाओं को दर्शाने वाले उत्कृष्ट नक्काशीदार द्वार (तोरण) हैं। स्टूपा एक प्रमुख तीर्थ स्थल था, जिसमें बुद्ध के अवशेष थे, और यह एशिया में बौद्ध धर्म के प्रसार को दर्शाता है।"
+                }
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const citySelect = document.getElementById('city');
+            citiesData.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.name;
+                option.textContent = city.name;
+                citySelect.appendChild(option);
+            });
+        });
+
+        function updateMonuments() {
+            const citySelect = document.getElementById('city');
+            const monumentSelect = document.getElementById('monument');
+            const storySection = document.getElementById('story');
+            const selectedCity = citySelect.value;
+
+            monumentSelect.innerHTML = '<option value="">Choose a Monument</option>';
+            monumentSelect.disabled = true;
+            storySection.classList.add('hidden');
+
+            if (selectedCity) {
+                const city = citiesData.find(c => c.name === selectedCity);
+                if (city) {
+                    city.monuments.forEach(monument => {
+                        const option = document.createElement('option');
+                        option.value = monument;
+                        option.textContent = monument;
+                        monumentSelect.appendChild(option);
+                    });
+                    monumentSelect.disabled = false;
+                }
+            }
+        }
+
+        function displayStory() {
+            const monumentSelect = document.getElementById('monument');
+            const storySection = document.getElementById('story');
+            const title = document.getElementById('monument-title');
+            const intro = document.getElementById('intro');
+            const history = document.getElementById('history');
+            const audio = document.getElementById('audio');
+            const selectedMonument = monumentSelect.value;
+
+            if (selectedMonument && stories[selectedMonument]) {
+                storySection.classList.remove('hidden');
+                title.textContent = selectedMonument;
+                intro.textContent = stories[selectedMonument][currentLanguage].intro;
+                history.textContent = stories[selectedMonument][currentLanguage].history;
+                audio.src = ''; // Placeholder: In a real app, set to actual audio file
+            } else {
+                storySection.classList.add('hidden');
+            }
+        }
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            document.getElementById('lang-hi').classList.toggle('active', lang === 'hi');
+            displayStory();
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('audio');
+            const playBtn = document.getElementById('play-btn');
+            if (audio.paused && audio.src) {
+                audio.play();
+                playBtn.textContent = '⏸ Pause Story';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶ Play Story';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adventure Activity Finder - Madhya Pradesh</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="adventure.css">
+</head>
+<body>
+  <!-- Adventure Activity Finder Start -->
+  <div class="container-xxl py-5">
+    <div class="container">
+      <div class="text-center">
+        <h6 class="section-title text-center text-primary text-uppercase">Explore Madhya Pradesh</h6>
+        <h1 class="mb-5">Adventure <span class="text-primary text-uppercase">Activity Finder</span></h1>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          <div class="bg-light rounded p-4 p-sm-5">
+            <div class="adventure-form">
+              <div class="row g-3">
+                <div class="col-12">
+                  <select id="activity-select" class="form-select" aria-label="Select an activity">
+                    <option value="">Select an Activity</option>
+                    <option value="Boating">Boating</option>
+                    <option value="Rock Climbing">Rock Climbing</option>
+                    <option value="River Rafting">River Rafting</option>
+                    <option value="Trekking">Trekking</option>
+                    <option value="Cycling">Cycling</option>
+                    <option value="Jungle Safari">Jungle Safari</option>
+                    <option value="Waterfall Trek">Waterfall Trek</option>
+                    <option value="Photography">Photography</option>
+                    <option value="Heritage Walks">Heritage Walks</option>
+                    <option value="Camping">Camping</option>
+                    <option value="Water Sports">Water Sports</option>
+                    <option value="Hot Air Ballooning">Hot Air Ballooning</option>
+                    <option value="Fishing">Fishing</option>
+                    <option value="Spiritual Tours">Spiritual Tours</option>
+                    <option value="Street Food Tours">Street Food Tours</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <div id="error-message" class="text-danger" style="display: none;"></div>
+                </div>
+                <div class="col-12">
+                  <button type="button" class="btn btn-primary w-100 py-3" onclick="findAdventure()">Find Cities</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Results Section -->
+      <div class="row justify-content-center mt-5" id="results" style="display: none;">
+        <div class="col-lg-10">
+          <h3 class="text-center mb-4">Suggested Cities</h3>
+          <div id="adventure-suggestions"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Adventure Activity Finder End -->
+
+  <!-- JavaScript for Adventure Finder -->
+  <script>
+    const adventureData = [
+      { city: "Bhopal", activities: ["Boating", "Rock Climbing"], image: "bhopal.png" },
+      { city: "Indore", activities: ["Street Food Tours", "Cycling"], image: "indore.png" },
+      { city: "Gwalior", activities: ["Rock Climbing", "Heritage Walks"], image: "gwalior fort.png" },
+      { city: "Jabalpur", activities: ["River Rafting", "Trekking"], image: "jabalpur.png" },
+      { city: "Ujjain", activities: ["Boating", "Spiritual Tours"], image: "ujjain.png" },
+      { city: "Sanchi", activities: ["Heritage Walks", "Cycling"], image: "sanchi stupa.png" },
+      { city: "Khajuraho", activities: ["Jungle Safari", "Waterfall Trek"], image: "khajuraho.png" },
+      { city: "Mandu", activities: ["Trekking", "Photography"], image: "mandu.png" },
+      { city: "Orchha", activities: ["River Rafting", "Heritage Walks"], image: "orcha.png" },
+      { city: "Pachmarhi", activities: ["Trekking", "Camping"], image: "panchamarhi.png" },
+      { city: "Rewa", activities: ["Waterfall Trekking", "Boating"], image: "rewa.png" },
+      { city: "Satna", activities: ["Trekking", "Spiritual Tours"], image: "satna.png" },
+      { city: "Panna", activities: ["Jungle Safari", "Trekking"], image: "panna.png" },
+      { city: "Chanderi", activities: ["Heritage Walks", "Photography"], image: "chanderi.png" },
+      { city: "Shivpuri", activities: ["Jungle Safari", "Boating"], image: "shivpuri.png" },
+      { city: "Hoshangabad", activities: ["Boating", "Fishing"], image: "hoshangabad.png" },
+      { city: "Chhindwara", activities: ["Trekking", "Camping"], image: "chindwara.png" },
+      { city: "Betul", activities: ["Boating", "Spiritual Tours"], image: "betul.png" },
+      { city: "Damoh", activities: ["Trekking", "Spiritual Tours"], image: "damoh.png" },
+      { city: "Vidisha", activities: ["Heritage Walks", "Cycling"], image: "vidisha.png" },
+      { city: "Burhanpur", activities: ["Trekking", "Heritage Walks"], image: "burhanpur.png" },
+      { city: "Khandwa", activities: ["Water Sports", "Hot Air Ballooning"], image: "khandwa.png" },
+      { city: "Seoni", activities: ["Jungle Safari", "Trekking"], image: "seoni.png" },
+      { city: "Raisen", activities: ["Rock Climbing", "Heritage Walks"], image: "raisen.png" },
+      { city: "Morena", activities: ["Heritage Walks", "Photography"], image: "morena.png" },
+      { city: "Narsinghpur", activities: ["Boating", "Spiritual Tours"], image: "narsingpur.png" },
+      { city: "Balaghat", activities: ["Jungle Safari", "Trekking"], image: "balaghat.png" },
+      { city: "Dewas", activities: ["Trekking", "Spiritual Tours"], image: "dewas.png" },
+      { city: "Tikamgarh", activities: ["Heritage Walks", "Boating"], image: "tikamgarh.png" },
+      { city: "Sidhi", activities: ["Jungle Safari", "Trekking"], image: "sidhi.png" }
+    ];
+
+    function findAdventure() {
+      const activity = document.getElementById('activity-select').value;
+      const errorMessage = document.getElementById('error-message');
+      const results = document.getElementById('results');
+      const adventureSuggestions = document.getElementById('adventure-suggestions');
+
+      // Reset error and results
+      errorMessage.style.display = 'none';
+      errorMessage.textContent = '';
+      results.style.display = 'none';
+      adventureSuggestions.innerHTML = '';
+
+      // Validate input
+      if (!activity) {
+        showError('Please select an activity.');
+        return;
+      }
+
+      // Find cities with the selected activity
+      const matchingCities = adventureData.filter(item => item.activities.includes(activity));
+
+      if (matchingCities.length === 0) {
+        showError(`No cities found offering ${activity}. Try another activity.`);
+        return;
+      }
+
+      // Create cards for each matching city
+      matchingCities.forEach(cityData => {
+        const adventureCard = document.createElement('div');
+        adventureCard.className = 'adventure-card mb-4 p-4 bg-white rounded shadow';
+        adventureCard.innerHTML = `
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="city-details">
+              <h4 class="text-primary">${cityData.city}</h4>
+              <p>Enjoy ${activity.toLowerCase()} in the stunning landscapes of ${cityData.city}!</p>
+            </div>
+            <div class="city-image-container">
+              <img src="${cityData.image}" alt="${cityData.city} Image" class="city-image">
+            </div>
+          </div>
+        `;
+        adventureSuggestions.appendChild(adventureCard);
+      });
+
+      // Show results
+      results.style.display = 'block';
+    }
+
+    function showError(message) {
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

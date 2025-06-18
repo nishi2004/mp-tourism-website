@@ -1,0 +1,252 @@
+/* Global Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Playfair Display', serif; /* Elegant, heritage-inspired font */
+}
+
+:root {
+    --primary: #FEA116; /* Vibrant orange for MP heritage */
+    --light: #F1F8FF; /* Soft light blue for calm background */
+    --dark: #0F172B; /* Deep navy for contrast */
+    --mp-gold: #FFD700; /* Golden yellow for heritage */
+    --light-bg: #f5f5f5; /* Light gray for subtle backgrounds */
+    --dark-text: #333; /* Dark gray for readable text */
+    --icon-color: #FEA116; /* Orange for icons */
+}
+
+body {
+    background: linear-gradient(135deg, var(--light-bg) 0%, var(--light) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* Container Styling */
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 750px;
+    position: relative;
+    border: 3px solid var(--mp-gold);
+    overflow: hidden;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Decorative Top Border */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, var(--primary), var(--mp-gold));
+}
+
+/* Heading Styling */
+h1 {
+    text-align: center;
+    color: var(--dark);
+    margin-bottom: 30px;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--mp-gold);
+    margin: 15px auto;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--dark-text);
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+/* Input and Select Styling */
+input, select {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid var(--light);
+    border-radius: 10px;
+    font-size: 1.1rem;
+    background: var(--light-bg);
+    color: var(--dark-text);
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(254, 161, 22, 0.4);
+    background: white;
+}
+
+input::placeholder {
+    color: #999;
+    font-style: italic;
+    font-size: 1rem;
+}
+
+/* Custom Select Arrow */
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FEA116'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 22px;
+}
+
+/* Button Styling */
+button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(45deg, var(--primary), var(--mp-gold));
+    color: var(--dark);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    background: linear-gradient(45deg, var(--mp-gold), var(--primary));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(254, 161, 22, 0.5);
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+button:active::after {
+    width: 250px;
+    height: 250px;
+}
+
+/* Response Message Styling */
+#responseMessage {
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(254, 161, 22, 0.15);
+    border: 1px solid var(--primary);
+    margin-top: 25px;
+    text-align: center;
+    color: var(--dark-text);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group input, .form-group select {
+    animation: slideIn 0.6s ease forwards;
+    animation-delay: calc(0.1s * var(--i));
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px;
+        border-width: 2px;
+        max-width: 90%;
+    }
+    h1 {
+        font-size: 2.2rem;
+    }
+    label {
+        font-size: 1.1rem;
+    }
+    input, select, button {
+        font-size: 1rem;
+        padding: 12px;
+    }
+    button {
+        padding: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+        border-width: 1px;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+    label {
+        font-size: 1rem;
+    }
+    input, select, button {
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+    button {
+        padding: 12px;
+        font-size: 1.1rem;
+    }
+    h1::after {
+        width: 60px;
+        height: 3px;
+    }
+}

@@ -1,0 +1,403 @@
+<script type="text/javascript">
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+    if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+            var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+            var firstSheetName = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[firstSheetName];
+
+            // Convert sheet to JSON to filter blank rows
+            var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+            // Filter out blank rows (rows where all cells are empty, null, or undefined)
+            var filteredData = jsonData.filter(row => row.some(filledCell));
+
+            // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+            var headerRowIndex = filteredData.findIndex((row, index) =>
+              row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+            );
+            // Fallback
+            if (headerRowIndex === -1 || headerRowIndex > 25) {
+              headerRowIndex = 0;
+            }
+
+            // Convert filtered JSON back to CSV
+            var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+            csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+            return csv;
+        } catch (e) {
+            console.error(e);
+            return "";
+        }
+    }
+    return gk_fileData[filename] || "";
+    }
+    </script><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MP Tourism Trip Planner</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-green-100 font-sans min-h-screen flex items-center justify-center">
+<div class="container mx-auto p-6 max-w-2xl">
+<h1 class="text-4xl font-bold text-center mb-8 text-blue-800">Plan Your Perfect Madhya Pradesh Adventure</h1>
+
+<!-- Progress Bar -->
+<div class="mb-6">
+  <div class="w-full bg-gray-200 rounded-full h-2.5">
+    <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+  </div>
+  <p class="text-sm text-gray-600 mt-2 text-center">Progress: <span id="progressText">0%</span></p>
+</div>
+
+<!-- Question Cards -->
+<div id="questionContainer" class="bg-white p-6 rounded-lg shadow-lg transition-all duration-300">
+  <h2 id="questionTitle" class="text-2xl font-semibold mb-4 text-gray-800"></h2>
+  <div id="questionOptions" class="space-y-4"></div>
+  <div class="flex justify-between mt-6">
+    <button id="prevButton" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 hidden">Previous</button>
+    <button id="nextButton" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Next</button>
+  </div>
+</div>
+
+<!-- Results Section -->
+<div id="results" class="hidden bg-white p-6 rounded-lg shadow-lg mt-6">
+  <h2 class="text-2xl font-semibold text-center mb-4 text-blue-800">Your Personalized MP Trip Plan</h2>
+  <div id="recommendations" class="space-y-6"></div>
+  <button id="restartButton" class="mt-6 w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Plan Another Trip</button>
+</div>
+</div>
+
+<script>
+// Questions for the trip planner
+const questions = [
+  {
+    id: "interest",
+    title: "What kind of experience are you looking for?",
+    options: [
+      { value: "wildlife", label: "Wildlife & Safaris" },
+      { value: "heritage", label: "Heritage & History" },
+      { value: "spirituality", label: "Spirituality & Pilgrimage" },
+      { value: "adventure", label: "Adventure & Nature" },
+      { value: "food", label: "Food & Culture" }
+    ],
+    type: "multiple",
+  },
+  {
+    id: "duration",
+    title: "How many days will you stay in Madhya Pradesh?",
+    options: [
+      { value: "1-3", label: "1-3 Days" },
+      { value: "4-6", label: "4-6 Days" },
+      { value: "7+", label: "7+ Days" }
+    ],
+    type: "single",
+  },
+  {
+    id: "travelMode",
+    title: "How will you travel to MP?",
+    options: [
+      { value: "flight", label: "Flight" },
+      { value: "train", label: "Train" },
+      { value: "road", label: "Road (Car/Bus)" }
+    ],
+    type: "single",
+  },
+  {
+    id: "budget",
+    title: "What is your budget preference?",
+    options: [
+      { value: "budget", label: "Budget" },
+      { value: "midrange", label: "Mid-range" },
+      { value: "luxury", label: "Luxury" }
+    ],
+    type: "single",
+  },
+  {
+    id: "groupType",
+    title: "Who are you traveling with?",
+    options: [
+      { value: "solo", label: "Solo" },
+      { value: "family", label: "Family" },
+      { value: "friends", label: "Friends" },
+      { value: "couple", label: "Couple" }
+    ],
+    type: "single",
+  },
+  {
+    id: "season",
+    title: "When are you planning to visit?",
+    options: [
+      { value: "winter", label: "Winter (Oct-Feb)" },
+      { value: "summer", label: "Summer (Mar-Jun)" },
+      { value: "monsoon", label: "Monsoon (Jul-Sep)" }
+    ],
+    type: "single",
+  },
+  {
+    id: "activityLevel",
+    title: "What’s your preferred activity level?",
+    options: [
+      { value: "relaxed", label: "Relaxed (Sightseeing, Leisure)" },
+      { value: "moderate", label: "Moderate (Mix of activities)" },
+      { value: "active", label: "Active (Trekking, Adventure)" }
+    ],
+    type: "single",
+  }
+];
+
+// Madhya Pradesh destinations with attributes
+const destinations = [
+  {
+    name: "Kanha National Park",
+    type: ["wildlife"],
+    duration: "2-3",
+    description: "Famous for its tiger population and lush forests, perfect for wildlife safaris.",
+    location: "Near Jabalpur",
+    travelMode: ["flight", "train", "road"],
+    budget: ["midrange", "luxury"],
+    season: ["winter"],
+    groupType: ["solo", "family", "friends", "couple"],
+    activityLevel: ["moderate", "active"],
+    itinerary: {
+      "1-3": "Day 1: Arrive, evening safari. Day 2: Morning and afternoon safaris. Day 3: Morning safari, depart.",
+      "4-6": "Day 1: Arrive, village walk. Days 2-3: Full-day safaris. Day 4: Explore buffer zone. Days 5-6: Relax, depart.",
+      "7+": "Extended safari package with nearby parks like Bandhavgarh."
+    },
+    link: "https://www.mptourism.com/destination-kanha-national-park.php"
+  },
+  {
+    name: "Khajuraho Temples",
+    type: ["heritage"],
+    duration: "1-2",
+    description: "UNESCO World Heritage Site with stunning 10th-century temples known for intricate carvings.",
+    location: "Khajuraho",
+    travelMode: ["flight", "train", "road"],
+    budget: ["budget", "midrange", "luxury"],
+    season: ["winter", "monsoon"],
+    groupType: ["solo", "family", "friends", "couple"],
+    activityLevel: ["relaxed", "moderate"],
+    itinerary: {
+      "1-3": "Day 1: Explore Western Group of Temples. Day 2: Visit Eastern and Southern Groups. Day 3: Depart.",
+      "4-6": "Day 1: Western Group. Day 2: Eastern/Southern Groups. Day 3: Sound and Light Show. Days 4-6: Nearby excursions (e.g., Panna).",
+      "7+": "Combine with Orchha and Gwalior for a heritage tour."
+    },
+    link: "https://www.mptourism.com/destination-khajuraho.php"
+  },
+  {
+    name: "Ujjain & Mahakaleshwar Temple",
+    type: ["spirituality"],
+    duration: "1-2",
+    description: "A sacred Jyotirlinga site with vibrant rituals and spiritual significance.",
+    location: "Ujjain",
+    travelMode: ["flight", "train", "road"],
+    budget: ["budget", "midrange"],
+    season: ["winter", "monsoon"],
+    groupType: ["solo", "family", "friends"],
+    activityLevel: ["relaxed"],
+    itinerary: {
+      "1-3": "Day 1: Visit Mahakaleshwar Temple, evening aarti. Day 2: Explore other temples, depart.",
+      "4-6": "Day 1: Mahakaleshwar aarti. Day 2: Visit local temples. Days 3-4: Day trip to Omkareshwar. Days 5-6: Relax, depart.",
+      "7+": "Include Indore and Maheshwar for a spiritual circuit."
+    },
+    link: "https://www.mptourism.com/destination-ujjain.php"
+  },
+  {
+    name: "Pachmarhi",
+    type: ["adventure"],
+    duration: "2-3",
+    description: "A serene hill station with caves, waterfalls, and trekking spots like Dhoopgarh.",
+    location: "Near Bhopal",
+    travelMode: ["train", "road"],
+    budget: ["budget", "midrange"],
+    season: ["winter", "monsoon"],
+    groupType: ["solo", "friends", "couple"],
+    activityLevel: ["moderate", "active"],
+    itinerary: {
+      "1-3": "Day 1: Visit Bee Falls, Jata Shankar. Day 2: Trek to Dhoopgarh, Pandav Caves. Day 3: Depart.",
+      "4-6": "Day 1: Bee Falls, caves. Days 2-3: Trekking, Rajat Prapat. Days 4-5: Satpura National Park. Day 6: Depart.",
+      "7+": "Extended adventure with Satpura and Churna."
+    },
+    link: "https://www.mptourism.com/destination-pachmarhi.php"
+  },
+  {
+    name: "Bhopal & Sanchi",
+    type: ["heritage", "food"],
+    duration: "2",
+    description: "Bhopal offers vibrant food culture and history, with nearby Sanchi’s Buddhist stupas.",
+    location: "Bhopal",
+    travelMode: ["flight", "train", "road"],
+    budget: ["budget", "midrange", "luxury"],
+    season: ["winter"],
+    groupType: ["solo", "family", "friends", "couple"],
+    activityLevel: ["relaxed", "moderate"],
+    itinerary: {
+      "1-3": "Day 1: Explore Bhopal’s lakes, food markets. Day 2: Day trip to Sanchi Stupa. Day 3: Depart.",
+      "4-6": "Day 1: Bhopal food tour. Day 2: Sanchi and Udayagiri Caves. Days 3-4: Bhimbetka rock shelters. Days 5-6: Relax, depart.",
+      "7+": "Combine with Gwalior and Orchha."
+    },
+    link: "https://www.mptourism.com/destination-bhopal.php"
+  }
+];
+
+// State management
+let currentQuestionIndex = 0;
+let answers = {};
+const totalQuestions = questions.length;
+
+// DOM elements
+const questionContainer = document.getElementById("questionContainer");
+const questionTitle = document.getElementById("questionTitle");
+const questionOptions = document.getElementById("questionOptions");
+const prevButton = document.getElementById("prevButton");
+const nextButton = document.getElementById("nextButton");
+const resultsSection = document.getElementById("results");
+const recommendationsDiv = document.getElementById("recommendations");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+const restartButton = document.getElementById("restartButton");
+
+// Render current question
+function renderQuestion() {
+  const question = questions[currentQuestionIndex];
+  questionTitle.textContent = question.title;
+  questionOptions.innerHTML = "";
+
+  if (question.type === "multiple") {
+    question.options.forEach(option => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" name="${question.id}" value="${option.value}" class="h-5 w-5 text-blue-600">
+          <span class="text-gray-700">${option.label}</span>
+        </label>
+      `;
+      questionOptions.appendChild(div);
+    });
+  } else {
+    question.options.forEach(option => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <label class="flex items-center space-x-2">
+          <input type="radio" name="${question.id}" value="${option.value}" class="h-5 w-5 text-blue-600" required>
+          <span class="text-gray-700">${option.label}</span>
+        </label>
+      `;
+      questionOptions.appendChild(div);
+    });
+  }
+
+  prevButton.classList.toggle("hidden", currentQuestionIndex === 0);
+  nextButton.textContent = currentQuestionIndex === totalQuestions - 1 ? "Get My Plan" : "Next";
+  updateProgress();
+}
+
+// Update progress bar
+function updateProgress() {
+  const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+  progressBar.style.width = `${progress}%`;
+  progressText.textContent = `${Math.round(progress)}%`;
+}
+
+// Collect answers
+function collectAnswers() {
+  const inputs = questionOptions.querySelectorAll("input:checked");
+  const question = questions[currentQuestionIndex];
+  if (question.type === "multiple") {
+    answers[question.id] = Array.from(inputs).map(input => input.value);
+  } else {
+    answers[question.id] = inputs[0]?.value;
+  }
+  return inputs.length > 0;
+}
+
+// Recommend destinations
+function recommendDestinations() {
+  const recommendations = [];
+  destinations.forEach(dest => {
+    let score = 0;
+    // Interest matching
+    if (answers.interest.some(interest => dest.type.includes(interest))) score += 30;
+    // Duration matching
+    if (answers.duration === "7+" || dest.duration.split("-").some(d => parseInt(d) <= parseInt(answers.duration.split("-")[1]))) score += 20;
+    // Travel mode
+    if (dest.travelMode.includes(answers.travelMode)) score += 15;
+    // Budget
+    if (dest.budget.includes(answers.budget)) score += 15;
+    // Group type
+    if (dest.groupType.includes(answers.groupType)) score += 10;
+    // Season
+    if (dest.season.includes(answers.season)) score += 5;
+    // Activity level
+    if (dest.activityLevel.includes(answers.activityLevel)) score += 5;
+
+    if (score >= 60) recommendations.push({ dest, score });
+  });
+
+  return recommendations.sort((a, b) => b.score - a.score).slice(0, 3);
+}
+
+// Display results
+function showResults() {
+  const recommendations = recommendDestinations();
+  questionContainer.classList.add("hidden");
+  resultsSection.classList.remove("hidden");
+
+  if (recommendations.length === 0) {
+    recommendationsDiv.innerHTML = "<p class='text-red-600 text-center'>No destinations match your preferences. Try different selections!</p>";
+    return;
+  }
+
+  recommendationsDiv.innerHTML = recommendations.map(({ dest }) => `
+    <div class="border-l-4 border-blue-600 pl-4">
+      <h3 class="text-xl font-semibold text-blue-800">${dest.name}</h3>
+      <p class="text-gray-600 mt-2">${dest.description}</p>
+      <p class="text-sm text-gray-500 mt-1">Location: ${dest.location}</p>
+      <p class="text-sm text-gray-500">Recommended Duration: ${dest.duration} days</p>
+      <p class="text-sm text-gray-500">Best for: ${dest.groupType.join(", ")}</p>
+      <h4 class="text-lg font-medium mt-4">Suggested Itinerary</h4>
+      <p class="text-gray-600">${dest.itinerary[answers.duration] || "Custom itinerary available for your trip length."}</p>
+      <a href="${dest.link}" target="_blank" class="text-blue-600 hover:underline mt-2 inline-block">Learn More</a>
+    </div>
+  `).join("");
+}
+
+// Event listeners
+nextButton.addEventListener("click", () => {
+  if (!collectAnswers()) {
+    alert("Please select at least one option!");
+    return;
+  }
+  currentQuestionIndex++;
+  if (currentQuestionIndex < totalQuestions) {
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+prevButton.addEventListener("click", () => {
+  currentQuestionIndex--;
+  renderQuestion();
+});
+
+restartButton.addEventListener("click", () => {
+  currentQuestionIndex = 0;
+  answers = {};
+  questionContainer.classList.remove("hidden");
+  resultsSection.classList.add("hidden");
+  renderQuestion();
+});
+
+// Initialize
+renderQuestion();
+</script>
+</body>
+</html>

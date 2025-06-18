@@ -1,0 +1,151 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: url('Heritage.png') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.65);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-box {
+    background: #fff7f0;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    animation: fadeIn 1s ease;
+  }
+  
+  .brand-title {
+    font-family: 'Kaushan Script', cursive;
+    font-size: 2.2rem;
+    color: #b2431b;
+    margin: 0;
+  }
+  
+  .tagline {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.6rem 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+    background: #fff;
+  }
+  
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    background-color: #dc6c14;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #b2431b;
+  }
+  
+  .divider {
+    margin: 1.2rem 0;
+    color: #aaa;
+    position: relative;
+    text-align: center;
+  }
+  
+  .divider::before,
+  .divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #ccc;
+  }
+  
+  .divider::before {
+    left: 0;
+  }
+  .divider::after {
+    right: 0;
+  }
+  
+  .social-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .social-btns button {
+    background-color: #fff;
+    color: #444;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem;
+    font-weight: 500;
+  }
+  
+  .social-btns button img {
+    width: 20px;
+    margin-right: 10px;
+  }
+  
+  .signup-text {
+    margin-top: 1.2rem;
+    font-size: 0.95rem;
+    color: #444;
+  }
+  
+  .signup-text a {
+    color: #dc6c14;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  @media (max-width: 500px) {
+    .login-box {
+      padding: 2rem 1.2rem;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

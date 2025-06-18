@@ -1,0 +1,162 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8edeb;
+  color: #333;
+}
+
+header {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #a63c06;
+  color: white;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.5em;
+}
+
+header p {
+  font-size: 1.2em;
+  opacity: 0.9;
+}
+
+main {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+#selector {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.dropdown-container {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #a63c06;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+select:focus {
+  outline: none;
+  border-color: #a63c06;
+}
+
+.language-toggle {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.lang-btn {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+  background-color: #e07a5f;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.lang-btn.active, .lang-btn:hover {
+  background-color: #a63c06;
+}
+
+#story {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in;
+}
+
+#story.hidden {
+  display: none;
+}
+
+#monument-title {
+  color: #a63c06;
+  font-size: 1.8em;
+  margin-top: 0;
+}
+
+#intro {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+#history {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+#audio-player {
+  text-align: center;
+}
+
+#play-btn {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #a63c06;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#play-btn:hover {
+  background-color: #e07a5f;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #a63c06;
+  color: white;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  header h1 {
+      font-size: 2em;
+  }
+
+  select, .lang-btn, #play-btn {
+      font-size: 0.9em;
+  }
+
+  #story {
+      padding: 15px;
+  }
+}

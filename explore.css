@@ -1,0 +1,235 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container and Grid */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 15px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.col {
+    flex: 0 0 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+    min-width: 300px; /* Ensure minimum width to enforce three cards */
+}
+
+/* City Card */
+.city-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.city-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.city-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.city-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.explore-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: #f57c00;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+    z-index: 1;
+}
+
+.explore-btn:hover {
+    background: #e66b00;
+}
+
+.city-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - 250px);
+}
+
+.city-content h5 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #f57c00;
+}
+
+.city-tags {
+    margin-bottom: 15px;
+}
+
+.city-tags span {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 0.9rem;
+    color: #f57c00;
+}
+
+.city-tags i {
+    margin-right: 5px;
+}
+
+.city-content p {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.view-detail-btn {
+    display: inline-block;
+    background: #f57c00;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+    align-self: flex-start;
+}
+
+.view-detail-btn:hover {
+    background: #e66b00;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .col {
+        flex: 0 0 calc(33.333% - 20px);
+        max-width: calc(33.333% - 20px);
+        min-width: 300px; /* Maintain three cards */
+    }
+
+    .city-image {
+        height: 200px;
+    }
+
+    .city-content {
+        height: calc(100% - 200px);
+    }
+}
+
+@media (max-width: 767px) {
+    .col {
+        flex: 0 0 100%;
+        max-width: 100%;
+        min-width: 0; /* Allow full width on small screens */
+    }
+
+    .row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .city-image {
+        height: 300px;
+    }
+
+    .city-content {
+        height: calc(100% - 300px);
+    }
+}
+
+/* Heading Styles */
+.text-center {
+    text-align: center;
+}
+
+.wow.fadeInUp {
+    animation: fadeInUp 1s ease-in-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-title {
+    font-size: 1.2rem;
+    color: #f57c00;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.text-primary {
+    color: #f57c00 !important;
+    font-weight: 700;
+}
+
+/* Search Bar Styles */
+.search-bar {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.search-bar input {
+    width: 300px;
+    padding: 10px 15px;
+    border: 2px solid #f57c00;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar input:focus {
+    border-color: #e66b00;
+}
+
+.search-bar .fas {
+    position: absolute;
+    margin-left: -30px;
+    margin-top: 10px;
+    color: #f57c00;
+}

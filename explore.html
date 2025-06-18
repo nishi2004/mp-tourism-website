@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Now</title>
+    <link rel="stylesheet" href="explore.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            
+            <h1 class="mb-5">Discover Your <span class="text-primary text-uppercase">Destination</span></h1>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="citySearch" placeholder="Search for a city..." onkeyup="filterCities()">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="row" id="cityRow">
+            <!-- Bhopal -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="bhopal.png" alt="Bhopal" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Bhopal</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                        </div>
+                        <p>Known as the City of Lakes, Bhopal offers a mix of history and nature with landmarks like Upper Lake.</p>
+                        <a href="bhopal.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Indore -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="indore.png" alt="Indore" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Indore</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-city"></i> Urban</span>
+                            <span><i class="fas fa-utensils"></i> Culinary</span>
+                        </div>
+                        <p>A bustling city known for its food and vibrant markets like Rajwada Palace.</p>
+                        <a href="indore.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Gwalior -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="gwalior fort.png" alt="Gwalior" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Gwalior</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-fort-awesome"></i> Fort</span>
+                        </div>
+                        <p>Famous for its majestic Gwalior Fort, a blend of history and architecture.</p>
+                        <a href="gwalior.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Jabalpur -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="jabalpur.png" alt="Jabalpur" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Jabalpur</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-water"></i> Waterfalls</span>
+                        </div>
+                        <p>Home to Dhuandhar Falls and Marble Rocks, ideal for nature and adventure.</p>
+                        <a href="jabalpur.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Ujjain -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="ujjain.png" alt="Ujjain" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Ujjain</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Spiritual</span>
+                            <span><i class="fas fa-tree"></i> Cultural</span>
+                        </div>
+                        <p>A holy city with the Mahakaleshwar Temple, Ujjain is a cultural hub in Madhya Pradesh.</p>
+                        <a href="ujjain.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Sanchi -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="sanchi.png" alt="Sanchi" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Sanchi</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-tree"></i> Cultural</span>
+                        </div>
+                        <p>Famous for the Sanchi Stupa, a UNESCO World Heritage site with rich Buddhist history.</p>
+                        <a href="sanchi.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Khajuraho -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="khajuraho.png" alt="Khajuraho" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Khajuraho</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                        </div>
+                        <p>Known for its stunning temples and nearby Panna National Park.</p>
+                        <a href="khajuraho.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Mandu -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="mandu.png" alt="Mandu" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Mandu</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-camera"></i> Photography</span>
+                        </div>
+                        <p>A historic fort town with stunning architecture and scenic views.</p>
+                        <a href="mandu.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Orchha -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="orcha.png" alt="Orchha" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Orchha</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-river"></i> Riverside</span>
+                        </div>
+                        <p>A historic town with stunning palaces and temples along the Betwa River.</p>
+                        <a href="orchha.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Pachmarhi -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="panchamarhi.png" alt="Pachmarhi" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Pachmarhi</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-mountain"></i> Hills</span>
+                        </div>
+                        <p>A hill station with lush forests and waterfalls, perfect for nature lovers.</p>
+                        <a href="panchmarhi.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Rewa -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="rewa.png" alt="Rewa" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Rewa</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-water"></i> Waterfalls</span>
+                        </div>
+                        <p>Known for Keoti Falls and Sanjay-Dubri National Park, a nature lover's paradise.</p>
+                        <a href="rewa.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Satna -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="satna.png" alt="Satna" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Satna</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Spiritual</span>
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                        </div>
+                        <p>Famous for Chitrakoot Falls and Maihar Temple, blending spirituality and nature.</p>
+                        <a href="satna.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Panna -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="panna.png" alt="Panna" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Panna</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-binoculars"></i> Wildlife</span>
+                        </div>
+                        <p>Home to Panna National Park and Pandav Falls, perfect for wildlife enthusiasts.</p>
+                        <a href="panna.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Chanderi -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="chanderi.png" alt="Chanderi" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Chanderi</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-camera"></i> Photography</span>
+                        </div>
+                        <p>Known for its historic forts and intricate textiles.</p>
+                        <a href="chanderi.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Shivpuri -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="shivpuri.png" alt="Shivpuri" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Shivpuri</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-binoculars"></i> Wildlife</span>
+                        </div>
+                        <p>Famous for Madhav National Park and historic Chhatris.</p>
+                        <a href="shivpuri.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Hoshangabad -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="hoshangabad.png" alt="Hoshangabad" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Hoshangabad</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-fish"></i> Fishing</span>
+                        </div>
+                        <p>Known for Sethani Ghat and Tawa Reservoir, great for boating and fishing.</p>
+                        <a href="hoshangabad.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Chhindwara -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="chindwara.png" alt="Chhindwara" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Chhindwara</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-mountain"></i> Hills</span>
+                        </div>
+                        <p>Home to Patalkot Valley and Tamia Hills, ideal for trekking.</p>
+                        <a href="chhindwara.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Betul -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="betul.png" alt="Betul" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Betul</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Spiritual</span>
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                        </div>
+                        <p>Famous for Muktagiri Jain Temple and scenic Khedi Dam.</p>
+                        <a href="betul.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Damoh -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="damoh.png" alt="Damoh" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Damoh</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Spiritual</span>
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                        </div>
+                        <p>Known for Kundalpur Temples and Nidan Falls, a blend of spirituality and nature.</p>
+                        <a href="damoh.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Vidisha -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="vidisha.png" alt="Vidisha" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Vidisha</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-tree"></i> Cultural</span>
+                        </div>
+                        <p>Famous for Udayagiri Caves and Heliodorus Pillar, rich in history.</p>
+                        <a href="vidisha.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Burhanpur -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="burhanpur.png" alt="Burhanpur" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Burhanpur</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-camera"></i> Photography</span>
+                        </div>
+                        <p>Known for Asirgarh Fort and historic Shahi Qila.</p>
+                        <a href="burhanpur.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Khandwa -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="khandwa.png" alt="Khandwa" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Khandwa</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-hot-air-balloon"></i> Adventure</span>
+                        </div>
+                        <p>Famous for Hanuwantiya Island and hot air ballooning opportunities.</p>
+                        <a href="khandwa.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Seoni -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="seoni.png" alt="Seoni" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Seoni</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-binoculars"></i> Wildlife</span>
+                        </div>
+                        <p>Home to Pench National Park, a haven for wildlife and nature lovers.</p>
+                        <a href="seoni.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Raisen -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="raisen.png" alt="Raisen" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Raisen</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                        </div>
+                        <p>Known for Raisen Fort and nearby Bhimbetka Caves.</p>
+                        <a href="raisen.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Morena -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="morena.png" alt="Morena" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Morena</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-camera"></i> Photography</span>
+                        </div>
+                        <p>Famous for Bateshwar Temples and Sabalgarh Fort.</p>
+                        <a href="morena.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Narsinghpur -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="narsingpur.png" alt="Narsinghpur" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Narsinghpur</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Spiritual</span>
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                        </div>
+                        <p>Known for Narsingh Temple and scenic Barman Ghat.</p>
+                        <a href="narsinghpur.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Balaghat -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="balaghat.png" alt="Balaghat" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Balaghat</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-binoculars"></i> Wildlife</span>
+                        </div>
+                        <p>Near Kanha National Park, perfect for jungle safaris.</p>
+                        <a href="balaghat.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Dewas -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="dewas.png" alt="Dewas" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Dewas</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Spiritual</span>
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                        </div>
+                        <p>Famous for Chamunda Tekri and Kaila Devi Temple.</p>
+                        <a href="dewas.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Tikamgarh -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="tikamgarh.png" alt="Tikamgarh" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Tikamgarh</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-landmark"></i> Historical</span>
+                            <span><i class="fas fa-camera"></i> Photography</span>
+                        </div>
+                        <p>Known for Garh Kundar Fort and nearby Orchha.</p>
+                        <a href="tikamgarh.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Sidhi -->
+            <div class="col">
+                <div class="city-card">
+                    <div class="city-image">
+                        <img src="sidhi.png" alt="Sidhi" class="img-fluid">
+                        <a href="#" class="explore-btn">Explore Now</a>
+                    </div>
+                    <div class="city-content">
+                        <h5>Sidhi</h5>
+                        <div class="city-tags">
+                            <span><i class="fas fa-tree"></i> Natural</span>
+                            <span><i class="fas fa-binoculars"></i> Wildlife</span>
+                        </div>
+                        <p>Home to Sanjay-Dubri National Park, ideal for wildlife safaris.</p>
+                        <a href="sidhi.html" class="view-detail-btn">VIEW DETAIL</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function filterCities() {
+            let input = document.getElementById("citySearch").value.toLowerCase();
+            let cards = document.getElementsByClassName("col");
+
+            for (let i = 0; i < cards.length; i++) {
+                let cityName = cards[i].getElementsByTagName("h5")[0].innerText.toLowerCase();
+                if (cityName.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Budget Visualizer - Madhya Pradesh</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Chart.js for visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="budget.css">
+</head>
+<body>
+  <!-- Budget Visualizer Start -->
+  <div class="container-xxl py-5">
+    <div class="container">
+      <div class="text-center">
+        <h6 class="section-title text-center text-primary text-uppercase">Plan Your Madhya Pradesh Trip</h6>
+        <h1 class="mb-5">Smart Budget <span class="text-primary text-uppercase">Visualizer</span></h1>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          <div class="bg-light rounded p-4 p-sm-5">
+            <div class="budget-form">
+              <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                  <div class="input-icon">
+                    <i class="fas fa-rupee-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                    <input type="number" id="min-budget" class="form-control" placeholder="Min Budget (₹)" min="1000" />
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="input-icon">
+                    <i class="fas fa-rupee-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                    <input type="number" id="max-budget" class="form-control" placeholder="Max Budget (₹)" min="1000" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div id="error-message" class="text-danger" style="display: none;"></div>
+                </div>
+                <div class="col-12">
+                  <button type="button" class="btn btn-primary w-100 py-3" onclick="visualizeBudget()">Find My Trip</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Results Section -->
+      <div class="row justify-content-center mt-5" id="results" style="display: none;">
+        <div class="col-lg-10">
+          <h3 class="text-center mb-4">Your Trip Suggestions</h3>
+          <div id="city-suggestions"></div>
+          <!-- Budget Breakdown Chart -->
+          <div class="mt-5">
+            <h4 class="text-center mb-4">Budget Breakdown</h4>
+            <canvas id="budgetChart"></canvas>
+            <p class="text-center mt-3 fw-semi-bold" id="budget-total"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Budget Visualizer End -->
+
+  <!-- JavaScript for Budget Visualizer -->
+  <script>
+    let chartInstance = null;
+
+    // City data from dataset with image URLs
+    const cities = [
+      { name: "Bhopal", budget: 8000, places: "Upper Lake, Taj-ul-Masjid, Bhimbetka Rock Shelters", food: "Poha, Bhopali Gosht Korma", activities: "Boating, Rock Climbing", time: "Oct-Feb", bestHotels: "Jehan Numa Palace, Courtyard by Marriott", avgHotels: "Hotel Shree Vatika, Hotel Lake View Ashok", image: "bhopal2.png" },
+      { name: "Indore", budget: 7000, places: "Rajwada Palace, Lal Bagh Palace, Kanch Mandir", food: "Poha, Sabudana Khichdi", activities: "Street Food Tours, Cycling", time: "Oct-Feb", bestHotels: "Sayaji Hotel, Radisson Blu", avgHotels: "Hotel President, Hotel Amaltas", image: "chappan.png" },
+      { name: "Gwalior", budget: 8000, places: "Gwalior Fort, Jai Vilas Palace, Tansen Tomb", food: "Bedai, Kachori", activities: "Rock Climbing, Heritage Walks", time: "Oct-Feb", bestHotels: "Usha Kiran Palace, Radisson Gwalior", avgHotels: "Hotel Shelter, Hotel Gwalior Regency", image: "gwalior fort.png" },
+      { name: "Jabalpur", budget: 7500, places: "Dhuandhar Falls, Marble Rocks, Madan Mahal Fort", food: "Khoya Jalebi, Sabudana", activities: "River Rafting, Trekking", time: "Sep-Feb", bestHotels: "Vijan Mahal, Narmada Jacksons", avgHotels: "Hotel Satya Ashoka, Hotel Rishi Regency", image: "jabalpur.png" },
+      { name: "Ujjain", budget: 6000, places: "Mahakaleshwar Temple, Kal Bhairav Temple", food: "Malpua, Rabri", activities: "Boating, Spiritual Tours", time: "Oct-Feb", bestHotels: "Hotel Anjushree, Shipra Residency", avgHotels: "Hotel Mittal Paradise, Hotel Meghdoot", image: "ujjain.png" },
+      { name: "Sanchi", budget: 6500, places: "Sanchi Stupa, Udayagiri Caves, Ashoka Pillar", food: "Dal Bafla, Bhutte ka Kees", activities: "Heritage Walks, Cycling", time: "Oct-Feb", bestHotels: "Gateway Retreat, Sambodhi International", avgHotels: "Hotel Sanchi Palace, Hotel Shubham", image: "sanchi stupa.png" },
+      { name: "Khajuraho", budget: 9000, places: "Khajuraho Temples, Raneh Falls, Panna National Park", food: "Mawa Bati, Lassi", activities: "Jungle Safari, Waterfall Trek", time: "Oct-Feb", bestHotels: "The Lalit Temple View, Radisson Jass", avgHotels: "Hotel Isabel Palace, Hotel Harmony", image: "khajuraho.png" },
+      { name: "Mandu", budget: 7000, places: "Jahaz Mahal, Rani Roopmati Pavilion, Hindola Mahal", food: "Bafla, Kebabs", activities: "Trekking, Photography", time: "Oct-Feb", bestHotels: "Malwa Retreat, Mandu Sarai", avgHotels: "Hotel Rupmati, Jahaz Mahal Guest House", image: "mandu.png" },
+      { name: "Orchha", budget: 7500, places: "Orchha Fort, Chaturbhuj Temple, Raja Mahal", food: "Bhutte ka Kees, Dal Bafla", activities: "River Rafting, Heritage Walks", time: "Oct-Feb", bestHotels: "Amar Mahal, Orchha Resort", avgHotels: "Hotel Fort View, Sheesh Mahal", image: "orcha.png" },
+      { name: "Pachmarhi", budget: 8000, places: "Bee Falls, Dhupgarh Peak, Jata Shankar Caves", food: "Biryani, Local Sweets", activities: "Trekking, Camping", time: "Mar-Jun, Oct-Feb", bestHotels: "WelcomHeritage Golf View, Amaltas Resorts", avgHotels: "Hotel Highlands, Satpura Retreat", image: "panchamarhi.png" },
+      { name: "Rewa", budget: 6000, places: "Rewa Fort, Keoti Falls, Venkat Bhawan", food: "Litti Chokha, Samosa", activities: "Waterfall Trekking, Boating", time: "Sep-Feb", bestHotels: "Hotel Raj Vilas, Hotel Govind", avgHotels: "Hotel Rewa Inn, Hotel Shree Ram", image: "rewa.png" },
+      { name: "Satna", budget: 6000, places: "Chitrakoot Falls, Maihar Temple, Bharat Milap Temple", food: "Poha, Jalebi", activities: "Trekking, Pilgrimage Tours", time: "Sep-Feb", bestHotels: "Hotel Bharhut, Savera Hotel", avgHotels: "Hotel Uma Residency, Hotel Sun Shine", image: "satna.png" },
+      { name: "Panna", budget: 9000, places: "Panna National Park, Pandav Falls, Diamond Mines", food: "Dal Bafla, Kheer", activities: "Jungle Safari, Trekking", time: "Oct-Feb", bestHotels: "Pashan Garh Wilderness, Ken River Lodge", avgHotels: "Hotel Panna Paradise, Jewel of the Jungle", image: "panna.png" },
+      { name: "Chanderi", budget: 6500, places: "Chanderi Fort, Koshak Mahal, Badal Mahal Gate", food: "Biryani, Kebabs", activities: "Heritage Walks, Photography", time: "Oct-Feb", bestHotels: "Tana Bana Resort, Chanderi Inn", avgHotels: "Hotel Sheela Shree, Kila Kothi", image: "chanderi.png" },
+      { name: "Shivpuri", budget: 7000, places: "Madhav National Park, Chhatri, Bhoora Khon Waterfall", food: "Poha, Sweets", activities: "Jungle Safari, Boating", time: "Sep-Feb", bestHotels: "Tourist Village, Hotel PS Resorts", avgHotels: "Hotel Sonchiraiya, Hotel Green View", image: "shivpuri.png" },
+      { name: "Hoshangabad", budget: 6500, places: "Sethani Ghat, Pachmarhi Biosphere, Tawa Reservoir", food: "Sabudana Khichdi, Poha", activities: "Boating, Fishing", time: "Oct-Feb", bestHotels: "Hotel Narmada Glory, MPT Sethani Ghat", avgHotels: "Hotel Sunrise, Hotel Vinayak", image: "hoshangabad.png" },
+      { name: "Chhindwara", budget: 7000, places: "Patalkot Valley, Tamia Hills, Tribal Museum", food: "Bhutte ka Kees, Dal Bafla", activities: "Trekking, Camping", time: "Oct-Feb", bestHotels: "Hotel Satkar, MPT Tamia Retreat", avgHotels: "Hotel Ashoka, Hotel Sagar Castle", image: "chindwara.png" },
+      { name: "Betul", budget: 6000, places: "Muktagiri Jain Temple, Balajipuram Temple, Khedi Dam", food: "Poha, Local Sweets", activities: "Boating, Pilgrimage Tours", time: "Oct-Feb", bestHotels: "Hotel Abhashree, Hotel Anmol", avgHotels: "Hotel Prince, Hotel Vaishnavi", image: "betul.png" },
+      { name: "Damoh", budget: 6000, places: "Kundalpur Temples, Nidan Falls, Jatashankar Temple", food: "Dal Bafla, Jalebi", activities: "Trekking, Spiritual Tours", time: "Sep-Feb", bestHotels: "Hotel Krishna Palace, Hotel Grand", avgHotels: "Hotel Shree Krishna, Hotel Sagar", image: "damoh.png" },
+      { name: "Vidisha", budget: 6000, places: "Udayagiri Caves, Heliodorus Pillar, Bija Mandal", food: "Poha, Bhutte ka Kees", activities: "Heritage Walks, Cycling", time: "Oct-Feb", bestHotels: "Hotel Uday Palace, MPT Vidisha", avgHotels: "Hotel Shree Ji, Hotel Ashoka", image: "vidisha.png" },
+      { name: "Burhanpur", budget: 6500, places: "Asirgarh Fort, Shahi Qila, Dargah-e-Hakimi", food: "Kebabs, Biryani", activities: "Trekking, Heritage Walks", time: "Oct-Feb", bestHotels: "Hotel Ambar, Tapti Retreat", avgHotels: "Hotel Grand Barrack, Hotel Krishna", image: "burhanpur.png" },
+      { name: "Khandwa", budget: 8000, places: "Hanuwantiya Island, Omkareshwar Temple, Nagchun Dam", food: "Poha, Dal Bafla", activities: "Water Sports, Hot Air Ballooning", time: "Oct-Feb", bestHotels: "MPT Hanuwantiya Resort, Hotel Grand Barrage", avgHotels: "Hotel Royal Palace, Hotel Shivam", image: "khandwa.png" },
+      { name: "Seoni", budget: 9000, places: "Pench National Park, Seoni Fort, Ghoghra Falls", food: "Bhutte ka Kees, Sweets", activities: "Jungle Safari, Trekking", time: "Sep-Feb", bestHotels: "Pench Jungle Camp, Tuli Tiger Resort", avgHotels: "Hotel Babuji, Hotel Pench Palace", image: "seoni.png" },
+      { name: "Raisen", budget: 7000, places: "Raisen Fort, Bhimbetka Caves, Sanchi Stupa (nearby)", food: "Dal Bafla, Poha", activities: "Rock Climbing, Heritage Walks", time: "Oct-Feb", bestHotels: "MPT Betwa Retreat, Hotel Heritage", avgHotels: "Hotel Raisen Inn, Hotel Shiv Vilas", image: "raisen.png" },
+      { name: "Morena", budget: 6000, places: "Bateshwar Temples, Sabalgarh Fort, Mitawali Temple", food: "Kachori, Ladoo", activities: "Heritage Walks, Photography", time: "Oct-Feb", bestHotels: "Hotel Silver Oak, Hotel Raj Palace", avgHotels: "Hotel Morena Inn, Hotel Shree Ji", image: "morena.png" },
+      { name: "Narsinghpur", budget: 6000, places: "Narsingh Temple, Barman Ghat, Dhoomeshwar Mahadev", food: "Poha, Sabudana Khichdi", activities: "Boating, Spiritual Tours", time: "Oct-Feb", bestHotels: "Hotel Atithi, MPT Barman Retreat", avgHotels: "Hotel Shree Ram, Hotel Narsingh", image: "narsingpur.png" },
+      { name: "Balaghat", budget: 9000, places: "Kanha National Park (nearby), Lanji Fort, Hatta Ki Baoli", food: "Dal Bafla, Local Sweets", activities: "Jungle Safari, Trekking", time: "Oct-Feb", bestHotels: "Kanha Jungle Lodge, Bagh Villas", avgHotels: "Hotel Sai Kripa, Hotel Shree Ji", image: "balaghat.png" },
+      { name: "Dewas", budget: 6000, places: "Chamunda Tekri, Kaila Devi Temple, Meetha Talab", food: "Poha, Jalebi", activities: "Trekking, Pilgrimage Tours", time: "Oct-Feb", bestHotels: "Hotel Ashoka, Hotel Central Park", avgHotels: "Hotel Shree Sai, Hotel Shivam", image: "dewas.png" },
+      { name: "Tikamgarh", budget: 6500, places: "Orchha (nearby), Garh Kundar Fort, Laxmi Temple", food: "Bhutte ka Kees, Kachori", activities: "Heritage Walks, Boating", time: "Oct-Feb", bestHotels: "Hotel Siddhant, MPT Tikamgarh", avgHotels: "Hotel Sunrise, Hotel Shree Krishna", image: "tikamgarh.png" },
+      { name: "Sidhi", budget: 7000, places: "Sanjay-Dubri National Park, Parsili Resort, Churah Valley", food: "Litti Chokha, Poha", activities: "Jungle Safari, Trekking", time: "Oct-Feb", bestHotels: "Sanjay Tiger Resort, Hotel River View", avgHotels: "Hotel Sidhi Inn, Hotel Shree Ram", image: "sidhi.png" }
+    ];
+
+    function visualizeBudget() {
+      const minBudget = parseFloat(document.getElementById('min-budget').value);
+      const maxBudget = parseFloat(document.getElementById('max-budget').value);
+      const errorMessage = document.getElementById('error-message');
+      const results = document.getElementById('results');
+      const citySuggestions = document.getElementById('city-suggestions');
+      const totalDisplay = document.getElementById('budget-total');
+
+      // Reset error and results
+      errorMessage.style.display = 'none';
+      errorMessage.textContent = '';
+      results.style.display = 'none';
+      citySuggestions.innerHTML = '';
+
+      // Validate inputs
+      if (isNaN(minBudget) || minBudget < 1000) {
+        showError('Please enter a valid minimum budget (≥ ₹1000).');
+        return;
+      }
+      if (isNaN(maxBudget) || maxBudget < 1000) {
+        showError('Please enter a valid maximum budget (≥ ₹1000).');
+        return;
+      }
+      if (minBudget > maxBudget) {
+        showError('Minimum budget cannot be greater than maximum budget.');
+        return;
+      }
+
+      // Filter cities within budget range
+      const matchingCities = cities.filter(city => city.budget >= minBudget && city.budget <= maxBudget);
+
+      if (matchingCities.length === 0) {
+        showError(`No cities found between ₹${minBudget} and ₹${maxBudget}. Try adjusting your range.`);
+        return;
+      }
+
+      // Generate suggestions
+      matchingCities.forEach(city => {
+        // Budget allocation (50% accommodation, 30% food, 20% activities)
+        const accommodationCost = city.budget * 0.5;
+        const foodCost = city.budget * 0.3;
+        const activitiesCost = city.budget * 0.2;
+
+        // Sample 3-day itinerary
+        const itinerary = generateItinerary(city);
+
+        // Create city card with image on the right
+        const cityCard = document.createElement('div');
+        cityCard.className = 'city-card mb-4 p-4 bg-white rounded shadow d-flex';
+        cityCard.innerHTML = `
+          <div class="city-details">
+            <h4 class="text-primary">${city.name}</h4>
+            <p><strong>Best Time to Visit:</strong> ${city.time}</p>
+            <p><strong>Famous Places:</strong> ${city.places}</p>
+            <p><strong>Famous Foods:</strong> ${city.food}</p>
+            <p><strong>Adventure Activities:</strong> ${city.activities}</p>
+            <p><strong>Estimated Budget:</strong> ₹${city.budget}</p>
+            <p><strong>Recommended Stays:</strong> ${city.avgHotels}</p>
+            <p><strong>Luxury Option:</strong> ${city.bestHotels}</p>
+            <h5 class="mt-3">Sample 3-Day Itinerary</h5>
+            <ul>
+              <li><strong>Day 1:</strong> ${itinerary.day1}</li>
+              <li><strong>Day 2:</strong> ${itinerary.day2}</li>
+              <li><strong>Day 3:</strong> ${itinerary.day3}</li>
+            </ul>
+          </div>
+          <div class="city-image-container ms-3">
+            <img src="${city.image}" alt="${city.name} Image" class="city-image">
+          </div>
+        `;
+        citySuggestions.appendChild(cityCard);
+
+        // Update chart for the first city
+        if (citySuggestions.children.length === 1) {
+          updateChart(accommodationCost, foodCost, activitiesCost, city.budget);
+        }
+      });
+
+      // Show results
+      results.style.display = 'block';
+      totalDisplay.textContent = `Explore ${matchingCities.length} destination(s) within your budget range!`;
+    }
+
+    function generateItinerary(city) {
+      const places = city.places.split(', ');
+      const foods = city.food.split(', ');
+      const activities = city.activities.split(', ');
+      return {
+        day1: `Visit ${places[0] || 'a famous site'}, enjoy ${foods[0] || 'local cuisine'} for lunch, and try ${activities[0] || 'a fun activity'}.`,
+        day2: `Explore ${places[1] || 'another attraction'}, savor ${foods[1] || foods[0] || 'local cuisine'}, and engage in ${activities[1] || activities[0] || 'a fun activity'}.`,
+        day3: `Discover ${places[2] || places[0] || 'a final spot'}, taste ${foods[0] || 'local cuisine'} again, and relax or shop locally.`
+      };
+    }
+
+    function updateChart(accommodation, food, activities, total) {
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+      const ctx = document.getElementById('budgetChart').getContext('2d');
+      chartInstance = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Accommodation', 'Food', 'Activities'],
+          datasets: [{
+            data: [accommodation, food, activities],
+            backgroundColor: ['#FF6F00', '#1A3C34', '#FFC107'], /* Saffron, forest green, mustard */
+            borderColor: '#FFF8E7', /* Beige border */
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: (context) => `₹${Math.round(context.parsed)}`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function showError(message) {
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

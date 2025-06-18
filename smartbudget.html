@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Budget Virtualizer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="smartbudget.css">
+</head>
+<body>
+    <div class="header">
+        <h6 class="section-title text-center text-primary text-uppercase">Ready, Set, Travel !</h6>
+        <h1>Smart Budget Virtualizer</h1>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <div class="section-content">
+                <h3>Enter Your Budget for Tailored Suggestions</h3>
+                <div class="smart-budget">
+                    <input type="number" id="budgetInput" placeholder="Enter your budget (INR)">
+                    <button onclick="suggestItinerary()">Get Suggestions</button>
+                    <p id="budgetResult"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Full dataset of 32 cities
+        const cities = [
+            { name: "Bhopal", budget: [8000, 12000], hotels: { best: ["Jehan Numa Palace", "Courtyard by Marriott"], average: ["Hotel Shree Vatika", "Hotel Lake View Ashok"] } },
+            { name: "Indore", budget: [7000, 10000], hotels: { best: ["Sayaji Hotel", "Radisson Blu"], average: ["Hotel President", "Hotel Amaltas"] } },
+            { name: "Gwalior", budget: [8000, 12000], hotels: { best: ["Usha Kiran Palace", "Radisson Gwalior"], average: ["Hotel Shelter", "Hotel Gwalior Regency"] } },
+            { name: "Jabalpur", budget: [7500, 11000], hotels: { best: ["Vijan Mahal", "Narmada Jacksons"], average: ["Hotel Satya Ashoka", "Hotel Rishi Regency"] } },
+            { name: "Ujjain", budget: [6000, 9000], hotels: { best: ["Hotel Anjushree", "Shipra Residency"], average: ["Hotel Mittal Paradise", "Hotel Meghdoot"] } },
+            { name: "Sanchi", budget: [6500, 10000], hotels: { best: ["Gateway Retreat", "Sambodhi International"], average: ["Hotel Sanchi Palace", "Hotel Shubham"] } },
+            { name: "Khajuraho", budget: [9000, 13000], hotels: { best: ["The Lalit Temple View", "Radisson Jass"], average: ["Hotel Isabel Palace", "Hotel Harmony"] } },
+            { name: "Mandu", budget: [7000, 10000], hotels: { best: ["Malwa Retreat", "Mandu Sarai"], average: ["Hotel Rupmati", "Jahaz Mahal Guest House"] } },
+            { name: "Orchha", budget: [7500, 11000], hotels: { best: ["Amar Mahal", "Orchha Resort"], average: ["Hotel Fort View", "Sheesh Mahal"] } },
+            { name: "Pachmarhi", budget: [8000, 12000], hotels: { best: ["WelcomHeritage Golf View", "Amaltas Resorts"], average: ["Hotel Highlands", "Satpura Retreat"] } },
+            { name: "Rewa", budget: [6000, 9000], hotels: { best: ["Hotel Raj Vilas", "Hotel Govind"], average: ["Hotel Rewa Inn", "Hotel Shree Ram"] } },
+            { name: "Satna", budget: [6000, 8500], hotels: { best: ["Hotel Bharhut", "Savera Hotel"], average: ["Hotel Uma Residency", "Hotel Sun Shine"] } },
+            { name: "Panna", budget: [9000, 13000], hotels: { best: ["Pashan Garh Wilderness", "Ken River Lodge"], average: ["Hotel Panna Paradise", "Jewel of the Jungle"] } },
+            { name: "Chanderi", budget: [6500, 9500], hotels: { best: ["Tana Bana Resort", "Chanderi Inn"], average: ["Hotel Sheela Shree", "Kila Kothi"] } },
+            { name: "Shivpuri", budget: [7000, 10000], hotels: { best: ["Tourist Village", "Hotel PS Resorts"], average: ["Hotel Sonchiraiya", "Hotel Green View"] } },
+            { name: "Hoshangabad", budget: [6500, 9500], hotels: { best: ["Hotel Narmada Glory", "MPT Sethani Ghat"], average: ["Hotel Sunrise", "Hotel Vinayak"] } },
+            { name: "Chhindwara", budget: [7000, 10000], hotels: { best: ["Hotel Satkar", "MPT Tamia Retreat"], average: ["Hotel Ashoka", "Hotel Sagar Castle"] } },
+            { name: "Betul", budget: [6000, 9000], hotels: { best: ["Hotel Abhashree", "Hotel Anmol"], average: ["Hotel Prince", "Hotel Vaishnavi"] } },
+            { name: "Damoh", budget: [6000, 8500], hotels: { best: ["Hotel Krishna Palace", "Hotel Grand"], average: ["Hotel Shree Krishna", "Hotel Sagar"] } },
+            { name: "Vidisha", budget: [6000, 9000], hotels: { best: ["Hotel Uday Palace", "MPT Vidisha"], average: ["Hotel Shree Ji", "Hotel Ashoka"] } },
+            { name: "Burhanpur", budget: [6500, 9500], hotels: { best: ["Hotel Ambar", "Tapti Retreat"], average: ["Hotel Grand Barrack", "Hotel Krishna"] } },
+            { name: "Khandwa", budget: [8000, 12000], hotels: { best: ["MPT Hanuwantiya Resort", "Hotel Grand Barrage"], average: ["Hotel Royal Palace", "Hotel Shivam"] } },
+            { name: "Seoni", budget: [9000, 13000], hotels: { best: ["Pench Jungle Camp", "Tuli Tiger Resort"], average: ["Hotel Babuji", "Hotel Pench Palace"] } },
+            { name: "Raisen", budget: [7000, 10000], hotels: { best: ["MPT Betwa Retreat", "Hotel Heritage"], average: ["Hotel Raisen Inn", "Hotel Shiv Vilas"] } },
+            { name: "Morena", budget: [6000, 9000], hotels: { best: ["Hotel Silver Oak", "Hotel Raj Palace"], average: ["Hotel Morena Inn", "Hotel Shree Ji"] } },
+            { name: "Narsinghpur", budget: [6000, 8500], hotels: { best: ["Hotel Atithi", "MPT Barman Retreat"], average: ["Hotel Shree Ram", "Hotel Narsingh"] } },
+            { name: "Balaghat", budget: [9000, 13000], hotels: { best: ["Kanha Jungle Lodge", "Bagh Villas"], average: ["Hotel Sai Kripa", "Hotel Shree Ji"] } },
+            { name: "Dewas", budget: [6000, 9000], hotels: { best: ["Hotel Ashoka", "Hotel Central Park"], average: ["Hotel Shree Sai", "Hotel Shivam"] } },
+            { name: "Tikamgarh", budget: [6500, 9500], hotels: { best: ["Hotel Siddhant", "MPT Tikamgarh"], average: ["Hotel Sunrise", "Hotel Shree Krishna"] } },
+            { name: "Sidhi", budget: [7000, 10000], hotels: { best: ["Sanjay Tiger Resort", "Hotel River View"], average: ["Hotel Sidhi Inn", "Hotel Shree Ram"] } }
+        ];
+
+        // Smart Budget Virtualizer Functionality
+        function suggestItinerary() {
+            const budget = parseInt(document.getElementById("budgetInput").value);
+            const result = cities.filter(city => budget >= city.budget[0] && budget <= city.budget[1]);
+            document.getElementById("budgetResult").innerHTML = result.length ? 
+                result.map(city => `${city.name}: Suitable with stays and food options`).join("<br>") : "No matches found.";
+        }
+    </script>
+</body>
+</html>
